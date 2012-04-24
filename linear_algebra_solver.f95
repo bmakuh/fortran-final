@@ -38,7 +38,7 @@ program linear_algebra_solver
   
     ! Check to make sure the choice is valid before continuing
     do
-      if (choice > 0 .and. choice < 5) exit
+      if (choice > 0 .and. choice < 6) exit
   
       write(*,*) 'That is an invalid choice. Please choose again.'
       call printMenu(choice)
@@ -136,6 +136,31 @@ program linear_algebra_solver
 
       ! Print the result matrix
       call printResultMatrix(result, rows1, cols2)
+
+      ! Deallocate the matrices
+      deallocate(matrix1)
+      deallocate(matrix2)
+      deallocate(result)
+
+    else if (choice == 5) then
+
+      ! Get the matrix dimensions
+      call getMatrixDimensions(rows1, cols1, .false.)
+
+      ! Allocate memory for the matrix
+      allocate(matrix1(rows1, cols1))
+
+      ! Get the input for the matrix
+      call getMatrixInput(matrix1, rows1, cols1)
+
+      ! Do the scalar multiplication
+      call scalarMultiplyMatrix(matrix1, rows1, cols1)
+
+      ! Print the result matrix
+      call printResultMatrix(matrix1, rows1, cols1)
+
+      ! Deallocate the matrix
+      deallocate(matrix1)
   
     end if
 
@@ -174,8 +199,9 @@ subroutine printMenu(choice)
   write(*,*) '--------------------------------------------'
   write(*,*) '1: Calculate a determinant of a square matrix'
   write(*,*) '2: Add two matrices together'
-  write(*,*) '3: Multiply two matrices together'
-  write(*,*) '4: Subtract one matrix from another'
+  write(*,*) '3: Subtract one matrix from another'
+  write(*,*) '4: Multiply two matrices together'
+  write(*,*) '5: Do scalar multiplication on a matrix'
   write(*,*) '--------------------------------------------'
 
   read(*,*) choice
@@ -296,6 +322,29 @@ subroutine multiplyMatrices(matrix1, rows1, cols1, matrix2, rows2, cols2, result
         sum = sum + matrix1(i,k) * matrix2(k,j)
       end do
       result(i,j) = sum
+    end do
+  end do
+
+end subroutine
+
+subroutine scalarMultiplyMatrix(matrix, rows, cols)
+  implicit none ! Must explicitely declare all variables
+  
+  INTEGER, INTENT(in):: rows, cols
+  INTEGER, DIMENSION(rows, cols), INTENT(out):: matrix
+  INTEGER:: i, j, scalar
+
+  ! Get the scalar multiplier
+  write(*,*) 'Please enter the scalar integer that you would like to multiply the matrix with'
+  read(*,*) scalar
+
+  write(*,*)
+  write(*,*) 'Applying the scalar to the matrix....'
+
+  ! Multiply the scalar with the matrix
+  do i = 1, rows
+    do j = 1, cols
+      matrix(i,j) = scalar * matrix(i,j)
     end do
   end do
 
