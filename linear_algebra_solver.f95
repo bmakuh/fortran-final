@@ -31,6 +31,7 @@ program linear_algebra_solver
   write(*,*) 'Hello and welcome to the MatrixSolver!'
   write(*,*) 'What would you like to solve today? Enter the number for your choice'
 
+  ! Loop through until the user doesn't want to do any more with the matrix solver
   do
 
     call printMenu(choice)
@@ -98,6 +99,7 @@ program linear_algebra_solver
       deallocate(matrix2)
       deallocate(result)
 
+    ! Matrix Multiplication
     else if (choice == 4) then
 
       ! Get the matrix dimensions and the matrix input for matrix 1 and 2
@@ -142,6 +144,7 @@ program linear_algebra_solver
       deallocate(matrix2)
       deallocate(result)
 
+    ! Scalar multiplication
     else if (choice == 5) then
 
       ! Get the matrix dimensions
