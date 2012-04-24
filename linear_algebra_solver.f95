@@ -7,6 +7,15 @@
 !  DESCRIPTION: A linear algebra solver for fortran final
 !  VARIABLES USED:
 !    NAME:           TYPE:     COMMENT:
+!    choice          integer   What operation does the user want to perform?
+!    rows1           integer   stores row dimension of first matrix
+!    cols1           integer   stores col dimension of first matrix
+!    rows2           integer   stores row dimension of second matrix
+!    cols2           integer   stores col dimension of second matrix
+!    matrix1         array     the first matrix
+!    matrix2         array     the second matrix (if applicable)
+!    result          array     the resultant matrix
+!    run_again       character does the user want to calculate something else?
 !
 !---------------------------------------------------------------------------
 program linear_algebra_solver
@@ -149,9 +158,15 @@ program linear_algebra_solver
 
   end do
 
+<<<<<<< HEAD
   write(*,*)
   write(*,*) 'Thank you for using the linear algebra solver! Have a nice day.'
   write(*,*)
+=======
+  write(*,*) "Thank you for using MatrixSolver!"
+  write(*,*) "We trust that your experience was enjoyable."
+  write(*,*) "Please call 303-273-3000 if you need further assistance."
+>>>>>>> 044d8ba496c3519f0bf1018f206cdf984cf46760
 
 end program
 
@@ -159,12 +174,13 @@ end program
 subroutine printMenu(choice)
   implicit none ! Must explicitely declare all variables
 
-  INTEGER, INTENT(out):: choice
+  integer, intent(out):: choice
+
   write(*,*) '--------------------------------------------'
-  write(*,*) '1 Calculate a determinate of a square matrix'
-  write(*,*) '2 Add two matrices together'
-  write(*,*) '3 Subtract two matrices together'
-  write(*,*) '4 Multiply two matrices together'
+  write(*,*) '1: Calculate a determinant of a square matrix'
+  write(*,*) '2: Add two matrices together'
+  write(*,*) '3: Multiply two matrices together'
+  write(*,*) '4: Subtract one matrix from another'
   write(*,*) '--------------------------------------------'
 
   read(*,*) choice
@@ -203,9 +219,9 @@ end subroutine
 subroutine getMatrixInput(matrix, rows, cols)
   implicit none !Must explicitely declare all variables
 
-  INTEGER, INTENT(in):: rows, cols
-  INTEGER, DIMENSION(rows, cols), INTENT(out):: matrix
-  INTEGER:: i, j, input
+  integer, intent(in):: rows, cols
+  integer, dimension(rows, cols), intent(out):: matrix
+  integer:: i, j, input
 
   write(*,*)
   write(*,*) 'Please enter in the integers for the', rows, 'x', cols, 'matrix'
