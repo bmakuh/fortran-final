@@ -28,7 +28,7 @@ program linear_algebra_solver
 
   ! Prompt the user
   write(*,*)
-  write(*,*) 'Hello and welcome to the linear algebra solver!'
+  write(*,*) 'Hello and welcome to the MatrixSolver!'
   write(*,*) 'What would you like to solve today? Enter the number for your choice'
 
   do
@@ -158,15 +158,10 @@ program linear_algebra_solver
 
   end do
 
-<<<<<<< HEAD
-  write(*,*)
-  write(*,*) 'Thank you for using the linear algebra solver! Have a nice day.'
-  write(*,*)
-=======
+
   write(*,*) "Thank you for using MatrixSolver!"
   write(*,*) "We trust that your experience was enjoyable."
   write(*,*) "Please call 303-273-3000 if you need further assistance."
->>>>>>> 044d8ba496c3519f0bf1018f206cdf984cf46760
 
 end program
 
