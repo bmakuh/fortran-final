@@ -22,7 +22,7 @@ program linear_algebra_solver
   implicit none ! Must explicitely declare all variables
 
   ! Variable declarations
-  INTEGER:: choice, rows1, cols1, rows2, cols2
+  INTEGER:: choice, rows1, cols1, rows2, cols2, int_result, determinate
   INTEGER, DIMENSION(:,:), allocatable:: matrix1, matrix2, result
   CHARACTER:: run_again
 
@@ -31,7 +31,7 @@ program linear_algebra_solver
   write(*,*) 'Hello and welcome to the MatrixSolver!'
   write(*,*) 'What would you like to solve today? Enter the number for your choice'
 
-  ! Loop through until the user doesn't want to do any more with the matrix solver
+  ! Loop through until the user doesn't want to do any more with the matrix solver,
   do
 
     call printMenu(choice)
@@ -46,9 +46,37 @@ program linear_algebra_solver
       write(*,*)
   
     end do
+
+    if (choice == 1) then
+
+      ! Prompt the user
+      write(*,*) 'We will now calculate the determinate of a 2x2 or 3x3 matrix.'
+  
+      ! Get the dimensions
+      call getMatrixDimensions(rows1, cols1, .true.)
+
+      do
+        if (rows1 < 4) exit
+
+        write(*,*) 'Sorry. We can only calculate the determinate of matrices up to 3x3. Please reinput the dimensions.'
+        call getMatrixDimensions(rows1, cols1, .true.)
+        
+      end do
+
+      ! Allocate memory for the matrix
+      allocate(matrix1(rows1, rows1))
+
+      ! Get the input for the matrix
+      call getMatrixInput(matrix1, rows1, rows1)
+
+      ! Calculate the determinate
+      int_result = determinate(matrix1, rows1)
+
+      ! Deallocate the matrix
+      deallocate(matrix1)
   
     ! Add or subtract a matrix
-    if (choice == 2 .or. choice == 3) then
+    else if (choice == 2 .or. choice == 3) then
   
       ! Get the matrix dimensions and the matrix input for matrix 1 and 2
       write(*,*) 'We will now input the dimensions for matrix 1'
@@ -200,7 +228,7 @@ subroutine printMenu(choice)
   integer, intent(out):: choice
 
   write(*,*) '--------------------------------------------'
-  write(*,*) '1: Calculate a determinant of a square matrix'
+  write(*,*) '1: Calculate a determinate of a 2x2 or a 3x3 matrix'
   write(*,*) '2: Add two matrices together'
   write(*,*) '3: Subtract one matrix from another'
   write(*,*) '4: Multiply two matrices together'
@@ -258,6 +286,41 @@ subroutine getMatrixInput(matrix, rows, cols)
   end do
 
 end subroutine
+
+! Calculate the determinate of a matrix
+integer function determinate(matrix, rows)
+  implicit none
+  
+  INTEGER:: rows
+  INTEGER, DIMENSION(rows, rows):: matrix
+  INTEGER:: int_result, determinate2x2
+
+  ! Tell the user we are calculating the determinate
+  write(*,*)
+  write(*,*) 'Now calculating the determinate....'
+
+  ! If this is a 2x2 matrix, send it to the determinate2x2 function
+  if (rows == 2) then
+    determinate = determinate2x2(matrix)
+  else 
+    determinate = determinate2x2(matrix)
+  end if
+
+  return
+
+end function
+
+! Calculate the determinate of a 2x2 matrix
+integer function determinate2x2(matrix)
+  implicit none
+  
+  INTEGER, DIMENSION(2,2):: matrix
+
+  determinate2x2 = 5
+
+  return
+
+end function
 
 ! Takes two matrices and adds them together
 subroutine addMatrices(rows, cols, matrix1, matrix2, result)
