@@ -22,7 +22,7 @@ program linear_algebra_solver
   implicit none ! Must explicitely declare all variables
 
   ! Variable declarations
-  INTEGER:: choice, rows1, cols1, rows2, cols2, int_result, determinate
+  INTEGER:: choice, rows1, cols1, rows2, cols2, int_result, determinant
   INTEGER, DIMENSION(:,:), allocatable:: matrix1, matrix2, result
   CHARACTER:: run_again
 
@@ -50,15 +50,15 @@ program linear_algebra_solver
     if (choice == 1) then
 
       ! Prompt the user
-      write(*,*) 'We will now calculate the determinate of a 2x2 or 3x3 matrix.'
+      write(*,*) 'We will now calculate the determinant of a 2x2 or 3x3 matrix.'
   
       ! Get the dimensions
       call getMatrixDimensions(rows1, cols1, .true.)
 
       do
-        if (rows1 < 4) exit
+        if (rows1 < 4 .and. rows1 > 1) exit
 
-        write(*,*) 'Sorry. We can only calculate the determinate of matrices up to 3x3. Please reinput the dimensions.'
+        write(*,*) 'Sorry. We can only calculate the determinant of 2x2 and 3x3 matrices. Please reinput the dimensions.'
         call getMatrixDimensions(rows1, cols1, .true.)
         
       end do
@@ -70,7 +70,9 @@ program linear_algebra_solver
       call getMatrixInput(matrix1, rows1, rows1)
 
       ! Calculate the determinate
-      int_result = determinate(matrix1, rows1)
+      int_result = determinant(matrix1, rows1)
+
+      write(*,*) 'The determinant is:', int_result
 
       ! Deallocate the matrix
       deallocate(matrix1)
@@ -228,7 +230,7 @@ subroutine printMenu(choice)
   integer, intent(out):: choice
 
   write(*,*) '--------------------------------------------'
-  write(*,*) '1: Calculate a determinate of a 2x2 or a 3x3 matrix'
+  write(*,*) '1: Calculate a determinant of a 2x2 or a 3x3 matrix'
   write(*,*) '2: Add two matrices together'
   write(*,*) '3: Subtract one matrix from another'
   write(*,*) '4: Multiply two matrices together'
@@ -287,23 +289,67 @@ subroutine getMatrixInput(matrix, rows, cols)
 
 end subroutine
 
-! Calculate the determinate of a matrix
-integer function determinate(matrix, rows)
+! Calculate the determinant of a matrix
+integer function determinant(matrix, rows)
   implicit none
   
   INTEGER:: rows
   INTEGER, DIMENSION(rows, rows):: matrix
-  INTEGER:: int_result, determinate2x2
+  INTEGER, DIMENSION(2, 2):: temp_matrix
+  INTEGER:: int_result, determinant2x2, product, i, j, k, sum, col_num
+
+  ! Explicitely reset this to prevent any magic numbers if this is called more than once
+  sum = 0
+  product = 1
 
   ! Tell the user we are calculating the determinate
   write(*,*)
-  write(*,*) 'Now calculating the determinate....'
+  write(*,*) 'Now calculating the determinant....'
+  write(*,*)
 
   ! If this is a 2x2 matrix, send it to the determinate2x2 function
   if (rows == 2) then
-    determinate = determinate2x2(matrix)
+    determinant = determinant2x2(matrix)
+
   else 
-    determinate = determinate2x2(matrix)
+
+    ! Loop through the 3 x 3 matrix and calculate each subdeterminant
+    do i = 1, 3
+
+      ! Loop through and get the 2x2 submatrix
+      do j = 1, 2
+        do k = 1, 3
+          ! Skip this iteration if k = i
+          if (k == i) cycle
+
+          ! The column for the temp matrix will be k -1
+          if (i == 1) then
+            col_num = k - 1
+          ! The column for the temp matrix will be k when k is 1 and k+1 when k is 2
+          else if (i == 2) then
+            if(k == 1) then
+              col_num = k
+            else
+              col_num = k - 1
+            end if
+          ! The column for the temp matrix will be k
+          else if (i == 3) then
+            col_num = k
+          end if
+
+          ! Put the appropriate value in the temp matrix
+          temp_matrix(j, col_num) = matrix(j + 1, k)
+        end do
+      end do
+
+      product = matrix(1, i) * (-1)**(1 + i) * determinant2x2(temp_matrix)
+      sum = sum + product
+
+    end do
+
+    ! The determinant is equal to the sum 
+    determinant = sum
+
   end if
 
   return
@@ -311,12 +357,13 @@ integer function determinate(matrix, rows)
 end function
 
 ! Calculate the determinate of a 2x2 matrix
-integer function determinate2x2(matrix)
+integer function determinant2x2(matrix)
   implicit none
   
   INTEGER, DIMENSION(2,2):: matrix
+  INTEGER:: product
 
-  determinate2x2 = 5
+  determinant2x2 = (matrix(1,1) * matrix(2,2)) - (matrix(1, 2) * matrix(2, 1))
 
   return
 
