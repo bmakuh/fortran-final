@@ -1,1 +1,17 @@
-The final project for CSCI 260A for Jerel and Ben
+Class:       CSCI 260A
+Title:       Linear Algebra Solver
+Authors:     Jerel Miller, Ben Makuh, Eric List
+Description: This application trivializes many common linear algebra
+             operations that can be time consuming or simply irritating
+             to do by hand.  In particular, this application supports the
+             following functions:
+
+             1. Calculating the determinant of a 2x2 or 3x3 matrix
+             2. Adding two matricies together
+             3. Subtracting one matrix from another
+             4. Multiplying two matricies together
+             5. Multiplying a matrix by a scalar
+
+             While there are other matrix operations that one could perform,
+             these are the most common and will substantially ease the amount
+             of effort one must exert in a linear algebra course.

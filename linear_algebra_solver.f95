@@ -234,7 +234,7 @@ subroutine printMenu(choice)
   write(*,*) '2: Add two matrices together'
   write(*,*) '3: Subtract one matrix from another'
   write(*,*) '4: Multiply two matrices together'
-  write(*,*) '5: Do scalar multiplication on a matrix'
+  write(*,*) '5: Multiply a matrix by a scalar'
   write(*,*) '--------------------------------------------'
 
   read(*,*) choice
