@@ -8,6 +8,7 @@
 !  VARIABLES USED:
 !    NAME:           TYPE:     COMMENT:
 !    choice          integer   What operation does the user want to perform?
+!    determinant     integer   A function that calculates the determinant of a matrix
 !    rows1           integer   stores row dimension of first matrix
 !    cols1           integer   stores col dimension of first matrix
 !    rows2           integer   stores row dimension of second matrix
